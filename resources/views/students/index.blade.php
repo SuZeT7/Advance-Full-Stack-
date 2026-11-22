@@ -1,33 +1,33 @@
-@extends('layouts.app')
+<x-layouts.app title="Students">
+    <h1>Students</h1>
+    <a href="{{ route('students.create') }}" class="btn">Create Student</a>
 
-@section('content')
-    <h2>Students</h2>
-    <a href="{{ route('students.create') }}">+ Add Student</a>
-
-    <table border="1" cellpadding="6">
-        <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Actions</th>
-        </tr>
-        @forelse ($students as $student)
+    <table>
+        <thead>
             <tr>
-                <td>{{ $student->name }}</td>
-                <td>{{ $student->email }}</td>
-                <td>{{ $student->phone }}</td>
-                <td>
-                    <a href="{{ route('students.show', $student) }}">View</a>
-                    <a href="{{ route('students.edit', $student) }}">Edit</a>
-                    <form action="{{ route('students.destroy', $student) }}" method="POST" style="display:inline" onsubmit="return confirm('Delete this student?')">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit">Delete</button>
-                    </form>
-                </td>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Actions</th>
             </tr>
-        @empty
-            <tr><td colspan="4">No students yet.</td></tr>
-        @endforelse
+        </thead>
+        <tbody>
+            @forelse ($students as $student)
+                <tr>
+                    <td>{{ $student->id }}</td>
+                    <td>{{ $student->name }}</td>
+                    <td>{{ $student->email }}</td>
+                    <td>{{ $student->phone }}</td>
+                    <td>
+                        <a href="{{ route('students.show', $student) }}">View</a>
+                        <a href="{{ route('students.edit', $student) }}">Edit</a>
+                        <x-delete-form :action="route('students.destroy', $student)" />
+                    </td>
+                </tr>
+            @empty
+                <tr><td colspan="5">No students found.</td></tr>
+            @endforelse
+        </tbody>
     </table>
-@endsection
+</x-layouts.app>

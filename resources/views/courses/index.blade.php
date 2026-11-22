@@ -1,37 +1,37 @@
-@extends('layouts.app')
+<x-layouts.app title="Courses">
+    <h1>Courses</h1>
+    <a href="{{ route('courses.create') }}" class="btn">Create Course</a>
 
-@section('content')
-    <h2>Courses</h2>
-    <a href="{{ route('courses.create') }}">+ Add Course</a>
-
-    <table border="1" cellpadding="6">
-        <tr>
-            <th>Name</th>
-            <th>Duration (weeks)</th>
-            <th>Fee</th>
-            <th>Difficulty</th>
-            <th>Active</th>
-            <th>Actions</th>
-        </tr>
-        @forelse ($courses as $course)
+    <table>
+        <thead>
             <tr>
-                <td>{{ $course->name }}</td>
-                <td>{{ $course->duration }}</td>
-                <td>{{ $course->fee }}</td>
-                <td>{{ $course->difficulty }}</td>
-                <td>{{ $course->is_active ? 'Yes' : 'No' }}</td>
-                <td>
-                    <a href="{{ route('courses.show', $course) }}">View</a>
-                    <a href="{{ route('courses.edit', $course) }}">Edit</a>
-                    <form action="{{ route('courses.destroy', $course) }}" method="POST" style="display:inline" onsubmit="return confirm('Delete this course?')">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit">Delete</button>
-                    </form>
-                </td>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Duration (weeks)</th>
+                <th>Fee</th>
+                <th>Difficulty</th>
+                <th>Active</th>
+                <th>Actions</th>
             </tr>
-        @empty
-            <tr><td colspan="6">No courses yet.</td></tr>
-        @endforelse
+        </thead>
+        <tbody>
+            @forelse ($courses as $course)
+                <tr>
+                    <td>{{ $course->id }}</td>
+                    <td>{{ $course->name }}</td>
+                    <td>{{ $course->duration }}</td>
+                    <td>{{ number_format($course->fee, 2) }}</td>
+                    <td>{{ $course->difficulty }}</td>
+                    <td>{{ $course->is_active ? 'Yes' : 'No' }}</td>
+                    <td>
+                        <a href="{{ route('courses.show', $course) }}">View</a>
+                        <a href="{{ route('courses.edit', $course) }}">Edit</a>
+                        <x-delete-form :action="route('courses.destroy', $course)" />
+                    </td>
+                </tr>
+            @empty
+                <tr><td colspan="7">No courses found.</td></tr>
+            @endforelse
+        </tbody>
     </table>
-@endsection
+</x-layouts.app>
